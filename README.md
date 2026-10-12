@@ -8,7 +8,9 @@ Acompanhamento privado da engenharia reversa e decompilação da versão PlaySta
 
 ![Treemap dos 88 arquivos assembly VU1 desmontados](MAPA-PROGRESSO.svg)
 
-Cada retângulo corresponde a um arquivo assembly gerado pelo vudis. A área acompanha o tamanho em bytes; os tons agrupam arquivos pela origem. Passe o cursor sobre um bloco para ver nome, seção de origem, endereço, tamanho e estado. O mapa representa a desmontagem VU1 documentada, não o progresso de decompilação de todo o jogo.
+Cada retângulo corresponde a um arquivo `.asm` gerado pelo vudis, com área proporcional aos bytes. Os nomes ficam disponíveis ao passar o cursor, sem texto dentro dos blocos. Cinza representa 0%, azul representa andamento e verde representa 100% da etapa de desmontagem VU1. Todos os 88 arquivos aparecem verdes porque o relatório registra sucesso e nenhuma instrução desconhecida. Isso não mede reconstrução em C nem a decompilação do jogo inteiro.
+
+Este arquivo SVG é uma imagem estática no GitHub: não permite clicar para abrir funções. Nos exemplos [DDS](https://decomp.dev/Megami-Decomps/dds-decomp) e [BattleTanx](https://decomp.dev/TheGh0stShip/BattleTanx-Global-Assault), o detalhamento de unidade para funções vem de relatórios do [objdiff](https://github.com/encounter/objdiff), que compara objetos de referência com objetos recompilados. O suporte do objdiff inclui MIPS/PS2, mas este repositório ainda não tem um inventário completo de funções com pares de objetos comparáveis nem o relatório de progresso correspondente. Para habilitar esse mapa clicável, será preciso preparar essa base e gerar o relatório objdiff v2 pela automação do GitHub Actions.
 
 ## Situação do projeto
 
