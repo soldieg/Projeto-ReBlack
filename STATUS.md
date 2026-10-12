@@ -25,12 +25,12 @@
 - **Sem percentual global não significa 0%.** Significa que ainda não foi contado o total de funções que servirá de denominador.
 - “Pronto para consulta” descreve os dados documentados; não certifica reconstrução do módulo inteiro nem equivalência de gameplay.
 
-## Próximas ações
+## Próximas ações rastreáveis
 
-1. Criar o inventário-base de funções únicas por módulo e seus estados: não iniciada, identificada, analisada, confirmada em runtime, reconstruída/comparada.
-2. Retomar a trilha Unit/StUnit sem repetir análises: verificar em PCSX2 um C0 não nulo, sua relocação e os campos vizinhos; manter a investigação das chaves e listas como trilha relacionada, mas separada.
-3. Depois do inventário, calcular a cobertura por módulo e o percentual global usando contagens reproduzíveis.
-4. Preparar um piloto de uma função no decomp.me só após confirmar compilador/configuração compatíveis e revisar o conteúdo que será enviado.
+1. [#4 — Inventariar funções únicas do EE, IOP e VU](https://github.com/soldieg/Projeto-ReBlack/issues/4). Essa contagem permitirá publicar percentuais por módulo e global.
+2. [#3 — Validar os C0 pendentes da amostra Unit #500 no PCSX2](https://github.com/soldieg/Projeto-ReBlack/issues/3).
+3. [#2 — Fechar o fluxo de chaves e lista de objetos StUnit/Unit](https://github.com/soldieg/Projeto-ReBlack/issues/2), reusando #409–#413.
+4. [#1 — Verificar o suporte EE/R5900 e preparar piloto seguro no decomp.me](https://github.com/soldieg/Projeto-ReBlack/issues/1).
 
 ## Último marco
 

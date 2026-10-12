@@ -1,8 +1,8 @@
 # Roteiro de trabalho
 
-A ordem abaixo reduz repetição e cria uma medida real de cobertura antes de prometer um percentual global.
+A ordem abaixo reduz repetição e cria uma medida real de cobertura antes de prometer um percentual global. As tarefas abertas podem ser acompanhadas pelos links.
 
-## 1. Medir o universo analisável
+## 1. Medir o universo analisável — [Issue #4](https://github.com/soldieg/Projeto-ReBlack/issues/4)
 
 - Inventariar funções únicas nos módulos EE, IOP e VU.
 - Remover duplicatas de overlays e aliases sem apagar a procedência.
@@ -11,7 +11,7 @@ A ordem abaixo reduz repetição e cria uma medida real de cobertura antes de pr
 
 **Condição de saída:** cada módulo tem total contado, quantidade por estado e origem reproduzível.
 
-## 2. Fechar a validação runtime da amostra Unit
+## 2. Fechar a validação runtime da amostra Unit — [Issue #3](https://github.com/soldieg/Projeto-ReBlack/issues/3)
 
 - Escolher um slot C0 não nulo que possa ser inspecionado sem avançar o save.
 - Em um checkpoint controlado do PCSX2, conferir o endereço relocacionado contra a RAM.
@@ -20,7 +20,7 @@ A ordem abaixo reduz repetição e cria uma medida real de cobertura antes de pr
 
 **Condição de saída:** os casos da amostra #500 têm explicação ou permanecem explicitamente pendentes.
 
-## 3. Continuar a trilha StUnit/Unit
+## 3. Continuar a trilha StUnit/Unit — [Issue #2](https://github.com/soldieg/Projeto-ReBlack/issues/2)
 
 Reusar as análises #409–#413. Seguir a origem das chaves e a escrita/leitura da lista de objetos filhos; manter a investigação dos campos-raiz +0x40/+0x48 separada até existir ligação de dados demonstrada.
 
@@ -33,11 +33,11 @@ Reusar as análises #409–#413. Seguir a origem das chaves e a escrita/leitura 
 - Marcar “correspondência exata” somente quando a comparação reproduzir todos os bytes do escopo.
 - Não extrapolar uma função exata para a toolchain original ou para o jogo inteiro sem evidência.
 
-## 5. Fazer um piloto controlado no decomp.me
+## 5. Fazer um piloto controlado no decomp.me — [Issue #1](https://github.com/soldieg/Projeto-ReBlack/issues/1)
 
 - Conferir se há preset ou compilador compatível com EE/R5900 e com a versão/flags relevantes.
-- Revisar a política de armazenamento/visibilidade e preparar uma função permitida para envio.
-- Registrar no GitHub o link/slug do scratch, preset, tamanho do alvo, resultado de correspondência e decisão.
+- Revisar a visibilidade e o tratamento do conteúdo enviado.
+- Registrar no GitHub o scratch, preset, tamanho do alvo, resultado de correspondência e decisão.
 - Não tratar um bom match como validação runtime.
 
 **Condição de saída:** um scratch reproduzível ajuda numa função PS2 específica sem confundir o resultado com cobertura global.
