@@ -4,24 +4,27 @@ Acompanhamento privado da engenharia reversa e decompilação da versão PlaySta
 
 > Este repositório é um painel de progresso e documentação. Ele não contém a ISO, arquivos extraídos do jogo, executáveis, dumps de memória ou pseudocódigo derivado do jogo.
 
-## Situação atual
+## Mapa de arquivos
 
-Consulte [STATUS.md](STATUS.md) para o painel resumido, [ROADMAP.md](ROADMAP.md) para a sequência de trabalho e [EVIDENCIAS.md](EVIDENCIAS.md) para os resultados que sustentam as afirmações.
+![Treemap dos 88 arquivos assembly VU1 desmontados](MAPA-PROGRESSO.svg)
 
-**Percentual global:** ainda não calculável com rigor. Primeiro precisamos inventariar as funções únicas do executável e classificar cada uma. Percentuais de amostras ou etapas não representam o jogo inteiro.
+Cada retângulo corresponde a um arquivo assembly gerado pelo vudis. A área acompanha o tamanho em bytes; os tons agrupam arquivos pela origem. Passe o cursor sobre um bloco para ver nome, seção de origem, endereço, tamanho e estado. O mapa representa a desmontagem VU1 documentada, não o progresso de decompilação de todo o jogo.
 
-## Mapa visual do progresso
+## Situação do projeto
 
-![Mapa visual das frentes e resultados documentados do ReBlack PS2](MAPA-PROGRESSO.svg)
+- **Progresso global:** ainda sem percentual confiável. Falta inventariar todas as funções únicas do executável e classificá-las; os números abaixo são escopos específicos.
+- **Módulos IOP:** 25/25 módulos ELF do mapa inicial importados e analisados no projeto IOP separado. A cobertura de funções ainda precisa ser medida.
+- **VU1 / DVP:** 88/88 arquivos desmontados, 151.472 bytes, 18.934 pares, 222 pares com flag I e 83 com flag E; 0 instruções desconhecidas e 0 falhas no relatório do vudis. A identificação de linguagem VU1 no Ghidra e a interpretação semântica continuam pendentes.
+- **Amostra Unit #500/#502:** 292 slots analisados. Foram encontrados 152 ponteiros C0 não nulos: 138 apontam para fora dos arquivos extraídos e 14 para dentro. Entre os 14 internos, 11 tabelas têm limites plausíveis e 3 casos seguem com limites inválidos. A validação desses alvos na RAM do PCSX2 está pendente.
+- **Integridade da amostra Unit:** hashes e tamanhos de 42/42 arquivos conferidos.
+- **Reconstrução comparada:** uma região de 36 bytes tem correspondência exata documentada. Isso ainda não confirma a toolchain original.
+- **Comparação REA/Ghidra (#502):** a comparação e a repetição das consultas Ghidra foram registradas; o provedor REA no Windows recusou o alvo antes da análise independente. Nenhuma função nova foi confirmada nessa execução.
 
-> As cores indicam o estado de cada frente dentro do escopo documentado. Os blocos não representam tamanho de código nem cobertura global. Os números e pendências devem acompanhar as atualizações de STATUS.md, EVIDENCIAS.md e ROADMAP.md.
+## Próximas etapas
 
-## Como o GitHub e o decomp.me serão usados
+1. Inventariar as funções únicas do EE, IOP e VU e atribuir estado e evidência a cada uma.
+2. Validar em RAM do PCSX2 os alvos C0 pendentes da amostra Unit.
+3. Confirmar uma toolchain compatível e ampliar a reconstrução comparada para funções selecionadas.
+4. Reavaliar o piloto de decomp.me quando o compilador EE/R5900 e as condições de exposição dos dados estiverem confirmados.
 
-O GitHub guarda o estado do projeto, decisões, evidências resumidas e tarefas futuras. O decomp.me é uma ferramenta web para comparar uma função de cada vez com assembly, usando um compilador e opções compatíveis. Não há sincronização automática entre os dois: quando um scratch for usado, registraremos seu link, configuração, resultado e decisão aqui.
-
-Antes de enviar qualquer trecho ao decomp.me, verificaremos o compilador EE/R5900 disponível e como o scratch é armazenado/compartilhado. A política do serviço informa que os dados salvos são mantidos ligados à sessão e que exportações públicas podem incluir dados que já estejam públicos no site: [política de privacidade do decomp.me](https://www.decomp.me/privacy). O piloto não deve conter material do jogo sem essa verificação.
-
-## Atualizações
-
-Cada avanço relevante será registrado em um commit com data, frente afetada, evidência, resultado e próximo passo. A lista fica em [ATUALIZACOES.md](ATUALIZACOES.md).
+Os relatórios completos permanecem na pasta local privada de resultados. Para critérios, evidências resumidas e atualizações, consulte [STATUS.md](STATUS.md), [EVIDENCIAS.md](EVIDENCIAS.md), [ROADMAP.md](ROADMAP.md) e [ATUALIZACOES.md](ATUALIZACOES.md).
