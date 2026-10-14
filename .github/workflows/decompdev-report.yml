@@ -1,6 +1,12 @@
 name: decomp.dev progress report
 
 on:
+  pull_request:
+    paths:
+      - ".github/workflows/decompdev-report.yml"
+      - "docs/decompdev/progress.json"
+      - "tools/decompdev_report.py"
+      - "tools/test_decompdev_report.py"
   push:
     branches:
       - main
@@ -34,6 +40,7 @@ jobs:
         run: python tools/decompdev_report.py --in docs/decompdev/progress.json --out build/report.json
 
       - name: Upload the report for decomp.dev
+        if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v7
         with:
           name: SLUS_213.76_report
