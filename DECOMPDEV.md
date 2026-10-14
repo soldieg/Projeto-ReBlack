@@ -6,7 +6,7 @@ Este projeto acompanha a pesquisa de decompilação do BLACK para PS2. A cobertu
 
 ## Piloto atual
 
-O primeiro relatório cobre somente EE/FUN_001ABEB8: uma função de 40 bytes, comparada pelo objdiff-cli 3.8.2, com 40/40 bytes e 1/1 função correspondentes. O escopo está rotulado como “EE single-function pilot; not global project coverage” tanto nos dados quanto no relatório.
+O primeiro relatório cobre somente EE/FUN_001ABEB8: uma função de 40 bytes, comparada pelo objdiff-cli 3.8.2, com 40/40 bytes e 1/1 função correspondentes. O escopo está rotulado como “EE single-function pilot; not global project coverage” na fonte de progresso e na categoria do relatório.
 
 ### Evidência e limites
 
@@ -14,8 +14,9 @@ O primeiro relatório cobre somente EE/FUN_001ABEB8: uma função de 40 bytes, c
 - O objeto-alvo foi reconstruído localmente a partir da disassembly verificada; a relocação da chamada foi restaurada e corroborada contra o objeto-base.
 - Ambos os objetos foram ligados no endereço original. A janela resultante de 40 bytes dos dois lados coincide com a referência original registrada pelo SHA-256 b072a1104192ced915e82243dedc5fc3547bd3e62d6b174ef97254d07d2e9182.
 - O alvo relocável é uma divisão reconstruída, não o objeto pré-link original. Essa incerteza está declarada nos metadados do progresso.
+- `progress.json` mantém o escopo detalhado e a evidência; o conversor publica no relatório somente os campos definidos pelo schema Report v2 do objdiff.
 - O runtime dessa função curta não foi confirmado.
-- Nenhum objeto, ELF, assembly, dump ou byte do jogo é incluído no repositório ou no artefato do workflow. Os dados publicados são métricas, nomes, método e hash da janela de referência.
+- Nenhum objeto, ELF, assembly, dump ou byte do jogo é incluído no repositório ou no artefato do workflow. O `progress.json` versionado mantém método e hash para auditoria; o artefato do workflow contém apenas métricas, nomes e metadados definidos pelo schema Report v2.
 
 O relatório do piloto pode mostrar 100% **dessa única unidade**. Não é percentual do executável nem do jogo. Não somar os conjuntos de módulos IOP, arquivos VU/DVP, funções EE, capturas de emulador ou sessões de análise sem inventário e regra de denominador comuns.
 
