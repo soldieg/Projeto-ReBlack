@@ -18,8 +18,10 @@ O [guia oficial](https://decomp.wiki/tools/decomp-dev) descreve este fluxo:
 - A branch `main` contém documentação do projeto e o mapa SVG; não contém pipeline de build, `objdiff.json`, objetos-alvo/base ou workflow de GitHub Actions.
 - O status do projeto ainda declara pendente o inventário completo de funções únicas do EE, IOP e VU. Sem esse denominador, não há relatório global reproduzível.
 - As evidências #507–#508 são observações do jogo original no PCSX2. Elas não podem ser contadas como unidades matching no `objdiff`.
-- O README registra o repositório como privado. A página de progresso do decomp.dev é pública; antes do cadastro e da instalação do app, é necessário conferir que informações do projeto e do commit ficarão visíveis e quais permissões o app solicitará.
-- O conector GitHub do Codex não tem conta conectada nesta sessão. A leitura do clone foi possível pelo Git local; a área de gerenciamento do decomp.dev redirecionou para autenticação do GitHub e ainda não foi aberta como sessão autenticada.
+- O README registra o repositório como privado. A URL pública `https://decomp.dev/soldieg/Projeto-ReBlack` retorna “Not found”.
+- Na conta autenticada `@soldieg`, o formulário `decomp.dev/manage/new` mostra `soldieg/Black-2006-Recomp` e `soldieg/CUMA`, mas não mostra `soldieg/Projeto-ReBlack`. A página informa que repositórios privados exigem instalar o GitHub App do decomp.dev.
+- A tela de instalação oferece `All repositories` como padrão. Essa opção cobre todos os repositórios atuais e futuros da conta; também existe `Only select repositories`. As permissões mostradas pelo GitHub são leitura de Actions, código e metadados, mais leitura e escrita em issues e pull requests.
+- A instalação não foi confirmada nem aplicada. A página do decomp.dev publica relatórios de progresso; o README do app informa que ele recebe eventos de workflows e pode comentar em PRs. O conector GitHub do Codex segue sem conta conectada, mas a autenticação do navegador mostrou `@soldieg`.
 
 ## Próximos passos
 
