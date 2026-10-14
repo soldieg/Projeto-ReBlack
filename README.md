@@ -7,11 +7,11 @@ Este repositório publica documentação e progresso. Ele não distribui a image
 ## Current Status
 
 - **Cobertura global:** ainda sem percentual confiável. O inventário completo de funções únicas do EE, IOP e VU e seu denominador ainda não foram fechados.
-- **decomp.dev — EE/R5900 provisório:** o catálogo Ghidra reúne 9.842 funções e 2.584.776 bytes de corpo. Há 31 funções exatas (376 bytes) e 2 resultados parciais (65 bytes); os 441 bytes fuzzy equivalem a 0,0171% deste catálogo provisório. IOP e VU/DVP não entram nessa medida; ela não é cobertura global do PS2. A página ainda está desativada e exibe o relatório histórico de uma função; veja [estado, método e sincronização](DECOMPDEV.md).
+- **decomp.dev — EE/R5900 provisório:** o catálogo Ghidra reúne 9.842 funções e 2.584.776 bytes de corpo. Há 31 funções exatas (376 bytes) e 2 resultados parciais (65 bytes); os 441 bytes fuzzy equivalem a 0,0171% deste catálogo provisório. IOP e VU/DVP não entram nessa medida; ela não é cobertura global do PS2. O painel está sincronizado no commit `e1d6e10`, exibe 0,02% decompilado e 0,01% totalmente ligado, e fica fora das listagens até alcançar o limite de 0,5%; veja [estado, método e sincronização](DECOMPDEV.md).
 - **IOP:** 25/25 módulos ELF do inventário inicial foram importados e analisados no projeto IOP separado; a cobertura de funções ainda não foi medida.
 - **VU/DVP:** 88/88 arquivos do lote inicial foram desmontados com o vudis. Isso é inventário de instruções, não contagem de funções decompiladas.
 - **PCSX2:** execuções documentadas observaram gameplay e a tela `LOADING` no jogo original; são evidências de runtime, não de cobertura de código.
-- **decomp.dev:** o workflow gera o Report v2 a partir de dados de progresso sanitizados; falta integrar o novo catálogo EE no branch padrão e atualizar a página, que ainda está desativada.
+- **decomp.dev:** o workflow gera o Report v2 a partir de dados sanitizados e publica no `main`; a página direta está sincronizada no commit `e1d6e10`.
 
 ## Project Documents
 

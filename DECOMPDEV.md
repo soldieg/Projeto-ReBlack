@@ -14,7 +14,7 @@ O catálogo Ghidra usado pela fila contém 9.842 funções, 2.584.776 bytes de c
 | Bytes com alguma correspondência | 441/2.584.776 — 0,0171% | 376 exatos + 65 parciais |
 | Bytes totalmente exatos | 376/2.584.776 — 0,0145% | Só funções cujo corpo inteiro recompilado bateu |
 
-Os 100% exibidos anteriormente no painel não eram o progresso do jogo: o relatório antigo continha apenas `EE/FUN_001ABEB8` (40 bytes). O painel público está desativado e mantém esse relatório histórico do commit `131576f`; desativado, ele não busca os novos artefatos.
+Os 100% exibidos anteriormente não eram o progresso do jogo: o relatório histórico continha apenas `EE/FUN_001ABEB8` (40 bytes). O painel foi sincronizado em 14/10/2026 e agora mostra o commit `e1d6e10`: **0,02% decompilado**, **0,01% totalmente ligado** e **2,58 MB** de código. O projeto usa o nome `Black PS2 — EE/R5900 (catálogo provisório)` e comentários automáticos de PR estão desligados. O link direto funciona; o site só inclui o projeto em listagens depois do limite mínimo de 0,5% de código correspondido.
 
 ## Proveniência e limites
 
@@ -45,13 +45,6 @@ O gerador bloqueia versão ou escopo diferentes, contagens divergentes, endereç
 
 ## Sincronização do painel
 
-O projeto decomp.dev existente está configurado como PlayStation 2, versão padrão `SLUS_213.76`, workflow `decompdev-report.yml`, mas está desativado. A página ainda mostra o relatório antigo de uma função.
-
-Depois de integrar a fonte de progresso e confirmar uma execução bem-sucedida no `main`:
-
-1. Definir o nome exibido como `Black PS2 — EE/R5900 (catálogo provisório)` para tornar o escopo visível no cabeçalho.
-2. Manter comentários automáticos em PR desativados.
-3. Ativar o projeto e forçar a atualização dos artefatos.
-4. Conferir no painel 9.842 unidades, 31 matches exatos, 376 bytes exatos e 441 bytes fuzzy; registrar aqui a URL e o commit efetivamente exibidos.
+O projeto está configurado como PlayStation 2, versão padrão `SLUS_213.76`, workflow `decompdev-report.yml` e ativo. A sincronização foi confirmada em [decomp.dev](https://decomp.dev/soldieg/ReBlack-PS2), commit `e1d6e10`, após o workflow `decomp.dev progress report` concluir com sucesso. A página mostra 9.842 unidades, 31 funções exatas, 376 bytes exatos e 441 bytes fuzzy, com escopo EE/R5900 provisório. Comentários automáticos em PR estão desativados.
 
 Só ampliar o escopo para IOP/VU/DVP depois de inventariar unidades e tamanhos únicos e reconciliar aliases, limites e sobreposições. Até lá, a porcentagem do painel é exclusivamente do catálogo EE provisório.
