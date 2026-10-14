@@ -2,10 +2,16 @@
 
 ## 14/10/2026 — relatório EE/R5900 provisório para decomp.dev
 
-- A página atual está desativada e seu relatório antigo mostra 100% por conter somente uma função de 40 bytes.
+- O relatório anterior mostrava 100% por conter somente uma função de 40 bytes; ele não representava o progresso do jogo.
 - O novo escopo reproduzível usa as 9.842 funções e 2.584.776 bytes da fila Ghidra: 31 funções/376 bytes exatos e 2 correspondências parciais/65 bytes.
 - IOP e VU/DVP permanecem fora do denominador; o relatório é rotulado como EE provisório e não como cobertura global do PS2.
 - Fonte, método, validação e passos de sincronização: [DECOMPDEV.md](DECOMPDEV.md).
+
+## 14/10/2026 — painel sincronizado
+
+- PR [#13](https://github.com/soldieg/ReBlack-PS2/pull/13) integrado no commit `e1d6e10`; o workflow do `main` concluiu com sucesso.
+- O painel direto foi ativado e atualizado para o catálogo de 9.842 funções. Agora mostra 0,02% decompilado, 0,01% totalmente ligado e 2,58 MB; o título identifica o recorte EE/R5900 provisório.
+- O decomp.dev oculta o projeto nas listagens até 0,5% de código correspondido. O link direto continua mostrando o relatório; comentários automáticos de PR foram desligados.
 
 ## 14/10/2026 — marcos PCSX2 #507 e #508
 

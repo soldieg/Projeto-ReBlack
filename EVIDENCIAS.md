@@ -8,7 +8,7 @@ Este arquivo registra conclusões curtas e suas limitações. Os relatórios com
 - Reconstrução local: 31 funções com match exato, somando 376 bytes; dois casos divergentes têm 10/128 e 55/336 bytes iguais. O total fuzzy medido é 441 bytes; os 376 bytes exatos são contados separadamente.
 - Identidade da fonte: `EE-FILA-DEPENDENCIAS-2026-10-14.csv`, SHA-256 `49fcf49980da8d045273a9b6a47431fbad9869c507ee7936a18d231462d2c1c3`.
 - O escopo é somente o catálogo EE/R5900 provisório. IOP e VU/DVP ainda não têm denominador reconciliado e não entram nesses percentuais.
-- A página [decomp.dev](https://decomp.dev/soldieg/ReBlack-PS2) continua desativada e seu histórico mostra 100% por causa do relatório antigo de uma função/40 bytes. Essa exibição não representa o jogo; o novo relatório precisa ser sincronizado antes de ativar a página.
+- A página [decomp.dev](https://decomp.dev/soldieg/ReBlack-PS2) foi sincronizada no commit `e1d6e10`: mostra 0,02% decompilado, 0,01% totalmente ligado, 2,58 MB e o título EE/R5900 provisório. O relatório antigo de uma função/40 bytes foi substituído; o link direto está visível, mas o projeto só entra nas listagens públicas após atingir o limite de 0,5%.
 
 ## Execução #502 — comparação REA/Ghidra/fluxo combinado
 
