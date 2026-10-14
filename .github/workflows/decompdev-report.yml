@@ -9,7 +9,6 @@ on:
       - "tools/test_decompdev_report.py"
       - "tools/record_validated_functions.py"
       - "tools/test_record_validated_functions.py"
-      - ".github/workflows/decompdev-validation-pr.yml"
   push:
     branches:
       - main
@@ -20,7 +19,6 @@ on:
       - "tools/test_decompdev_report.py"
       - "tools/record_validated_functions.py"
       - "tools/test_record_validated_functions.py"
-      - ".github/workflows/decompdev-validation-pr.yml"
   workflow_dispatch:
 
 permissions:

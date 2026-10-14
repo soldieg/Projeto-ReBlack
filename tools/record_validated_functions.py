@@ -5,6 +5,7 @@ import argparse
 import copy
 import hashlib
 import json
+import os
 import re
 import secrets
 import subprocess
@@ -12,6 +13,8 @@ import sys
 import tempfile
 from datetime import date, datetime, timezone
 from pathlib import Path
+from urllib.error import HTTPError
+from urllib.request import Request, urlopen
 
 from tools.decompdev_report import ADDRESS_RE, NAME_RE, SHA256_RE, build_report
 
@@ -117,6 +120,56 @@ def _github_repo(remote_url):
     return match.groups() if match else (None, None)
 
 
+def _create_pull_request(owner, repository, branch, function_count):
+    """Open a PR using the same GitHub credential configured for git push."""
+    credential = subprocess.run(
+        ["git", "credential", "fill"],
+        input="protocol=https\nhost=github.com\n\n",
+        check=True,
+        text=True,
+        capture_output=True,
+        env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
+    ).stdout
+    fields = dict(line.split("=", 1) for line in credential.splitlines() if "=" in line)
+    token = fields.get("password")
+    if not token:
+        raise RuntimeError("GitHub credential helper did not return an API credential")
+
+    payload = json.dumps({
+        "title": f"Validated PS2 progress: {function_count} function(s)",
+        "head": branch,
+        "base": "main",
+        "body": (
+            "This PR contains only sanitized function progress metadata and a SHA-256 reference "
+            "to local validation evidence. No raw evidence, game binaries, reconstructed source, "
+            "or object files are included. GitHub Actions validates the report; merge after "
+            "review to publish the updated decomp.dev artifact."
+        ),
+    }).encode("utf-8")
+    request = Request(
+        f"https://api.github.com/repos/{owner}/{repository}/pulls",
+        data=payload,
+        headers={
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {token}",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "Content-Type": "application/json",
+            "User-Agent": "PS2-decomp-progress-recorder",
+        },
+        method="POST",
+    )
+    try:
+        with urlopen(request, timeout=30) as response:
+            result = json.load(response)
+            return result["html_url"]
+    except HTTPError as exc:
+        try:
+            message = json.loads(exc.read().decode("utf-8", "replace")).get("message", "")
+        except (ValueError, AttributeError):
+            message = ""
+        raise RuntimeError(f"GitHub could not open the PR ({exc.code}): {message}") from exc
+
+
 def publish_record(repo, record, evidence_file):
     """Build and push a clean metadata-only branch based on the current origin/main."""
     repo = Path(repo).resolve()
@@ -168,7 +221,7 @@ def publish_record(repo, record, evidence_file):
             worktree_path.rmdir()
 
     if pushed:
-        return f"https://github.com/{owner}/{repository}/pulls?q=is%3Apr+is%3Aopen+head%3A{owner}%3A{branch}"
+        return _create_pull_request(owner, repository, branch, len(record["functions"]))
     raise RuntimeError("the validated progress branch was not pushed")
 
 
@@ -181,8 +234,8 @@ def main():
 
     record = json.loads(Path(args.record).read_text(encoding="utf-8"))
     pull_request_search = publish_record(args.repo, record, args.evidence_file)
-    print("Validation metadata pushed. GitHub Actions will open a PR and validate the report.")
-    print(f"PR search: {pull_request_search}")
+    print("Validation metadata pushed and PR opened. GitHub Actions will validate the report.")
+    print(f"PR: {pull_request_search}")
     print("After review and merge, the main workflow publishes the updated decomp.dev report.")
 
 

@@ -51,8 +51,8 @@ Use `tools/record_validated_functions.py` depois que a comparação local compro
 1. Crie um JSON local com ID/método da evidência e as funções (`name`, `address`, `size`).
 2. Aponte para o arquivo local da evidência. O script calcula o SHA-256; o arquivo e seu caminho não são enviados.
 3. Execute `python tools/record_validated_functions.py --record <registro.json> --evidence-file <evidencia-local>`.
-4. O script busca `origin/main`, confere nome/endereço/tamanho, executa as validações e envia uma branch contendo apenas `docs/decompdev/progress.json`.
-5. GitHub Actions abre um PR e valida o relatório. Revise o resultado e faça merge; o workflow de `main` publica o artefato `SLUS_213.76_report`, que atualiza o painel.
+4. O script busca `origin/main`, confere nome/endereço/tamanho, executa as validações e envia uma branch contendo apenas `docs/decompdev/progress.json`; depois abre o PR com a credencial GitHub configurada para o Git.
+5. GitHub Actions valida o relatório no PR. Revise o resultado e faça merge; o workflow de `main` publica o artefato `SLUS_213.76_report`, que atualiza o painel.
 
 Modelo do registro local:
 
