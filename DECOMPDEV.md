@@ -1,6 +1,6 @@
 # Integração com decomp.dev
 
-**Estado:** piloto preparado em uma branch; ainda não publicado no branch padrão nem sincronizado ao painel do decomp.dev.
+**Estado:** workflow e artefato do piloto ativos no branch padrão; cadastro e leitura pelo painel do decomp.dev ainda não confirmados.
 
 Este projeto acompanha a pesquisa de decompilação do BLACK para PS2. A cobertura global do EE, IOP e VU segue **sem percentual confiável**, porque o inventário completo de unidades e o denominador ainda não foram fechados.
 
@@ -26,7 +26,7 @@ O fluxo segue o padrão usado pelo [BFM-decomp](https://github.com/Druthulu/BFM-
 - Fonte dos dados: docs/decompdev/progress.json.
 - Conversor: tools/decompdev_report.py.
 - Workflow: .github/workflows/decompdev-report.yml.
-- Artefato publicado: SLUS_213.76_report, contendo build/report.json.
+- Artefato publicado pelo GitHub Actions: SLUS_213.76_report, com o arquivo report.json gerado localmente em build/report.json.
 - O workflow roda quando os dados, conversor ou teste mudam no branch padrão, ou por acionamento manual.
 
 Reproduza localmente:
@@ -40,11 +40,11 @@ O relatório Report v2 é derivado das contagens da prova local; a prova complet
 
 ## Cadastro e sincronização
 
-1. Integrar esta mudança ao branch padrão main.
-2. Confirmar execução concluída do workflow e artefato SLUS_213.76_report.
+1. O workflow já foi integrado ao branch padrão main no PR #7.
+2. A execução do workflow no branch padrão concluiu com sucesso e publicou o artefato SLUS_213.76_report.
 3. Cadastrar o repositório em [decomp.dev/manage/new](https://decomp.dev/manage/new), com descrição que identifique explicitamente o escopo do piloto.
-4. Conferir no painel que versão, unidade e métricas correspondem ao artefato.
-5. Só então registrar a URL e a data da sincronização neste documento e no README.
+4. Conferir no painel que versão, unidade e métricas correspondem ao relatório; a linha de função deve permitir o detalhamento da unidade.
+5. Registrar a URL e a data da sincronização neste documento e no README depois de comprovar a leitura no painel.
 
 O projeto ainda não está cadastrado nem há prova de leitura do relatório pelo painel. A instalação opcional do GitHub App do decomp.dev deve ser limitada a este repositório caso o serviço realmente a exija; não conceder acesso a todos os repositórios da conta.
 
