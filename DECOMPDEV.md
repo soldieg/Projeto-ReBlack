@@ -1,6 +1,6 @@
 # Integração com decomp.dev
 
-**Estado em 14/10/2026: ainda não sincronizado.** O decomp.dev publica relatórios de progresso de decompilações matching; não é um espelho deste painel de pesquisa.
+**Estado em 14/10/2026: ainda não sincronizado; piloto bloqueado pela ausência de objeto-alvo relocável e entrada segura para o workflow.** O decomp.dev publica relatórios de progresso de decompilações matching; não é um espelho deste painel de pesquisa.
 
 ## O que a wiki exige
 
