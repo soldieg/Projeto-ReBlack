@@ -1,6 +1,6 @@
-# Projeto ReBlack
+# ReBlack-PS2 — BLACK para PlayStation 2
 
-Acompanhamento público da engenharia reversa e decompilação da versão PlayStation 2 de BLACK.
+Projeto de engenharia reversa e decompilação de **BLACK para PlayStation 2**. O escopo técnico é o Emotion Engine (EE/R5900), o IOP e as unidades vetoriais VU; o projeto não acompanha outra plataforma.
 
 > Este repositório é um painel de progresso e documentação. Ele não contém a ISO, arquivos extraídos do jogo, executáveis, dumps de memória ou pseudocódigo derivado do jogo.
 
@@ -29,3 +29,23 @@ O relatório piloto do objdiff é gerado a partir de métricas auditadas em `doc
 4. Reavaliar o piloto de decomp.me quando o compilador EE/R5900 e as condições de exposição dos dados estiverem confirmados.
 
 Os relatórios completos permanecem na pasta local privada de resultados. Para critérios, evidências resumidas e atualizações, consulte [STATUS.md](STATUS.md), [EVIDENCIAS.md](EVIDENCIAS.md), [ROADMAP.md](ROADMAP.md) e [ATUALIZACOES.md](ATUALIZACOES.md).
+
+## Project Documents
+
+- [Status do projeto](STATUS.md) — avanço verificável, limites e próximos passos por frente PS2.
+- [Evidências](EVIDENCIAS.md) — resultados de Ghidra e PCSX2, com escopo e limitações.
+- [Roteiro de trabalho](ROADMAP.md) — tarefas rastreáveis para EE, IOP, VU e validação runtime.
+- [Atualizações](ATUALIZACOES.md) — histórico resumido das mudanças e marcos do projeto.
+- [Integração com decomp.dev](DECOMPDEV.md) — relatório objdiff, piloto e estado da sincronização.
+- [Avaliação do decomp.me](DECOMPME.md) — compatibilidade e condições para um piloto seguro no EE/R5900.
+
+## Reference and Tools
+
+- **Ghidra 12.1.3** — análise estática dos executáveis e módulos PS2, incluindo EE/R5900.
+- **PCSX2** — observação dinâmica do jogo original e validação de hipóteses em runtime.
+- **objdiff-cli 3.8.2** — comparação pontual de objetos reconstruídos; o resultado atual cobre somente a função piloto listada em `DECOMPDEV.md`.
+- **GitHub Actions** — validação do relatório e geração do artefato Report v2 usado na integração de progresso.
+- **decomp.dev** — destino planejado para exibir o progresso decompilado; o cadastro e a leitura do relatório ainda precisam ser confirmados.
+- **vudis** — inventário e desmontagem inicial dos dados VU/DVP; esses resultados não são contados como funções decompiladas.
+
+As referências e ferramentas listadas aqui correspondem ao fluxo de PlayStation 2 documentado neste repositório. Resultados de desmontagem, capturas do emulador e métricas de conjuntos isolados não representam, por si só, cobertura global de decompilação.
