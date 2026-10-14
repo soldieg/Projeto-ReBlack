@@ -1,0 +1,76 @@
+name: decomp.dev progress report
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "objdiff.json"
+      - "tools/decompdev/**"
+      - "src/**"
+      - "asm/**"
+      - "include/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    name: Generate and publish objdiff report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install objdiff-cli
+        run: cargo install --locked --git https://github.com/encounter/objdiff.git --tag v3.8.2 objdiff-cli
+
+      - name: Validate objdiff inputs
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          config_path = Path("objdiff.json")
+          if not config_path.is_file():
+              raise SystemExit("objdiff.json is missing; add the complete project unit inventory first.")
+
+          config = json.loads(config_path.read_text(encoding="utf-8"))
+          units = config.get("units", [])
+          if not units:
+              raise SystemExit("objdiff.json has no units; refusing to publish an empty progress report.")
+
+          missing = []
+          for unit in units:
+              name = unit.get("name", "<unnamed>")
+              target = unit.get("target_path")
+              if not target:
+                  missing.append(f"{name}: target_path is missing")
+              elif not Path(target).is_file():
+                  missing.append(f"{name}: target object not found at {target}")
+
+              base = unit.get("base_path")
+              if base and not Path(base).is_file():
+                  missing.append(f"{name}: base object not found at {base}")
+
+          if missing:
+              raise SystemExit("objdiff input validation failed:\n- " + "\n- ".join(missing))
+
+          print(f"Validated {len(units)} project units and their available object files.")
+          PY
+
+      - name: Generate decompilation progress report
+        run: objdiff-cli report generate -o build/report.json
+
+      - name: Upload report for decomp.dev
+        uses: actions/upload-artifact@v7
+        with:
+          name: SLUS_213.76_report
+          path: build/report.json
+          if-no-files-found: error
+
