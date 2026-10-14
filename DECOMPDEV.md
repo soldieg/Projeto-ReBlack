@@ -23,6 +23,13 @@ O [guia oficial](https://decomp.wiki/tools/decomp-dev) descreve este fluxo:
 - A tela de instalação oferece `All repositories` como padrão. Essa opção cobre todos os repositórios atuais e futuros da conta; também existe `Only select repositories`. As permissões mostradas pelo GitHub são leitura de Actions, código e metadados, mais leitura e escrita em issues e pull requests.
 - A instalação não foi confirmada nem aplicada. A página do decomp.dev publica relatórios de progresso; o README do app informa que ele recebe eventos de workflows e pode comentar em PRs. O conector GitHub do Codex segue sem conta conectada, mas a autenticação do navegador mostrou `@soldieg`.
 
+## Pré-flight do piloto decomp.dev — 14/10/2026
+
+**Estado: bloqueado antes da geração do relatório.** Há uma amostra com matching estático exato, `FUN_001ABEB8`: 40/40 bytes no intervalo original `SLUS_213.76` do offset `0xACEB8`, com SHA-256 `b072a1104192ced915e82243dedc5fc3547bd3e62d6b174ef97254d07d2e9182`. A fonte foi compilada com SN Systems ProDG EE GCC 2.95.3-EE (SN BUILD 1.36), `-O2 -G8 -fomit-frame-pointer`; o objeto candidato `FUN_001ABEB8.o` tem SHA-256 `e0e60e4745799ad9b3a25fe0549fd39db9f3a337b99eb38ffd3010bb62b07b3c`. A comparação e o comando estão documentados no material local `03 - RESULTADOS E EVIDENCIAS/INVENTARIO DE FUNCOES/SNPRODG-2.95.3-CONTROLLED-SAMPLES-2026-10-11/FUN_001ABEB8/`.
+
+O material da amostra contém o `.o` candidato e um `function.bin` com os 40 bytes extraídos do alvo, e o objeto-alvo relocável está ausente. O objdiff compara objetos relocáveis (`.o`), conforme a [documentação oficial do objdiff](https://github.com/encounter/objdiff#usage); portanto, o binário de 40 bytes não pode ser apontado como `target_path`. Também não foi identificado um caminho seguro e reproduzível para disponibilizar os objetos privados ao runner do GitHub Actions sem publicá-los como artefatos.
+
+**Decisão do pré-flight:** não criar `objdiff.json`, relatório, workflow ou percentual de piloto até que exista um objeto-alvo relocável comprovado e um método seguro para o runner acessar as entradas. O matching estático de 40 bytes permanece evidência local de uma função, não uma sincronização decomp.dev.
 ## Próximos passos
 
 1. Concluir a contagem de unidades por módulo, preservando aliases e proveniência, como previsto na issue #4.
