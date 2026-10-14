@@ -7,11 +7,11 @@ Este repositório publica documentação e progresso. Ele não distribui a image
 ## Current Status
 
 - **Cobertura global:** ainda sem percentual confiável. O inventário completo de funções únicas do EE, IOP e VU e seu denominador ainda não foram fechados.
-- **Piloto de decomp.dev:** o relatório cobre uma função EE, `FUN_001ABEB8`, com 40/40 bytes e 1/1 função correspondentes. Os 100% são apenas dessa unidade de piloto, não do executável nem do jogo.
+- **decomp.dev — EE/R5900 provisório:** o catálogo Ghidra reúne 9.842 funções e 2.584.776 bytes de corpo. Há 31 funções exatas (376 bytes) e 2 resultados parciais (65 bytes); os 441 bytes fuzzy equivalem a 0,0171% deste catálogo provisório. IOP e VU/DVP não entram nessa medida; ela não é cobertura global do PS2. A página ainda está desativada e exibe o relatório histórico de uma função; veja [estado, método e sincronização](DECOMPDEV.md).
 - **IOP:** 25/25 módulos ELF do inventário inicial foram importados e analisados no projeto IOP separado; a cobertura de funções ainda não foi medida.
 - **VU/DVP:** 88/88 arquivos do lote inicial foram desmontados com o vudis. Isso é inventário de instruções, não contagem de funções decompiladas.
 - **PCSX2:** execuções documentadas observaram gameplay e a tela `LOADING` no jogo original; são evidências de runtime, não de cobertura de código.
-- **decomp.dev:** o GitHub Actions gera o artefato do relatório piloto. O cadastro do repositório e a leitura do relatório no painel ainda precisam ser confirmados.
+- **decomp.dev:** o workflow gera o Report v2 a partir de dados de progresso sanitizados; falta integrar o novo catálogo EE no branch padrão e atualizar a página, que ainda está desativada.
 
 ## Project Documents
 
@@ -19,14 +19,14 @@ Este repositório publica documentação e progresso. Ele não distribui a image
 - [Evidence](EVIDENCIAS.md) — resultados resumidos de análise estática e observação no PCSX2.
 - [Roadmap](ROADMAP.md) — próximos passos rastreáveis para EE, IOP, VU e runtime.
 - [Updates](ATUALIZACOES.md) — histórico dos marcos e mudanças do projeto.
-- [decomp.dev integration](DECOMPDEV.md) — formato do relatório, evidência do piloto e situação da sincronização.
+- [decomp.dev integration](DECOMPDEV.md) — catálogo EE provisório, métricas, limites e sincronização do painel.
 
 ## Reference and Tools
 
 - [Ghidra](https://github.com/NationalSecurityAgency/ghidra) — análise estática de executáveis e módulos PlayStation 2, incluindo EE/R5900.
 - [PCSX2](https://github.com/PCSX2/pcsx2) — execução do jogo original e observação dinâmica em runtime.
 - **vudis** — desmontagem inicial de dados VU/DVP; seus arquivos e contagens não são tratados como funções decompiladas.
-- [objdiff](https://github.com/encounter/objdiff) — comparação do piloto de uma função; o relatório publicado é limitado a esse escopo.
+- [objdiff](https://github.com/encounter/objdiff) — formato do relatório de progresso por função.
 - **GitHub Actions** — valida os dados e gera o relatório Report v2 para a integração de progresso.
 - [decomp.dev](https://decomp.dev/) e [decomp.wiki](https://decomp.wiki/tools/decomp-dev) — destino do painel de progresso e documentação do fluxo de integração.
 - [REA](https://github.com/morluto/rea) — avaliado no fluxo PS2; o provedor disponível recusou o alvo ELF/MIPS nesta execução, então não há resultado independente do REA contado como decompilação.

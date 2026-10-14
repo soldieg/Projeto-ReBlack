@@ -1,5 +1,12 @@
 # Atualizações do painel
 
+## 14/10/2026 — relatório EE/R5900 provisório para decomp.dev
+
+- A página atual está desativada e seu relatório antigo mostra 100% por conter somente uma função de 40 bytes.
+- O novo escopo reproduzível usa as 9.842 funções e 2.584.776 bytes da fila Ghidra: 31 funções/376 bytes exatos e 2 correspondências parciais/65 bytes.
+- IOP e VU/DVP permanecem fora do denominador; o relatório é rotulado como EE provisório e não como cobertura global do PS2.
+- Fonte, método, validação e passos de sincronização: [DECOMPDEV.md](DECOMPDEV.md).
+
 ## 14/10/2026 — marcos PCSX2 #507 e #508
 
 - A execução #507 registrou visualmente uma cena de gameplay do jogo original, com HUD e arma.

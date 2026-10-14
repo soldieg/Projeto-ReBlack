@@ -2,6 +2,14 @@
 
 Este arquivo registra conclusões curtas e suas limitações. Os relatórios completos permanecem no diretório local de resultados do projeto; esta cópia não inclui binários do jogo, memória bruta ou código derivado.
 
+## Catálogo EE/R5900 para decomp.dev — 14/10/2026
+
+- A fila Ghidra contém 9.842 funções únicas por início, 2.584.776 bytes de corpo e nenhum intervalo sobreposto; 141 rótulos sintéticos ficaram fora.
+- Reconstrução local: 31 funções com match exato, somando 376 bytes; dois casos divergentes têm 10/128 e 55/336 bytes iguais. O total fuzzy medido é 441 bytes; os 376 bytes exatos são contados separadamente.
+- Identidade da fonte: `EE-FILA-DEPENDENCIAS-2026-10-14.csv`, SHA-256 `49fcf49980da8d045273a9b6a47431fbad9869c507ee7936a18d231462d2c1c3`.
+- O escopo é somente o catálogo EE/R5900 provisório. IOP e VU/DVP ainda não têm denominador reconciliado e não entram nesses percentuais.
+- A página [decomp.dev](https://decomp.dev/soldieg/ReBlack-PS2) continua desativada e seu histórico mostra 100% por causa do relatório antigo de uma função/40 bytes. Essa exibição não representa o jogo; o novo relatório precisa ser sincronizado antes de ativar a página.
+
 ## Execução #502 — comparação REA/Ghidra/fluxo combinado
 
 - Mesmo executável ELF/MIPS e mesma cadeia técnica da #500.

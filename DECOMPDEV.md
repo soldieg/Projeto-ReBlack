@@ -1,54 +1,57 @@
 # Integração com decomp.dev
 
-**Estado:** workflow e artefato do piloto ativos no branch padrão; cadastro e leitura pelo painel do decomp.dev ainda não confirmados.
+**Escopo atual do relatório:** catálogo provisório de funções EE/R5900 de `SLUS_213.76`. Este recorte não representa a cobertura completa do BLACK para PS2: IOP e VU/DVP estão fora do denominador.
 
-Este projeto acompanha a pesquisa de decompilação do BLACK para PS2. A cobertura global do EE, IOP e VU segue **sem percentual confiável**, porque o inventário completo de unidades e o denominador ainda não foram fechados.
+## O que o painel deve mostrar
 
-## Piloto atual
+O catálogo Ghidra usado pela fila contém 9.842 funções, 2.584.776 bytes de corpo e 141 rótulos sintéticos excluídos. Não há intervalos de função sobrepostos na fila.
 
-O primeiro relatório cobre somente EE/FUN_001ABEB8: uma função de 40 bytes, comparada pelo objdiff-cli 3.8.2, com 40/40 bytes e 1/1 função correspondentes. O escopo está rotulado como “EE single-function pilot; not global project coverage” na fonte de progresso e na categoria do relatório.
+| Medida EE/R5900 | Resultado | Como interpretar |
+|---|---:|---|
+| Funções do catálogo provisório | 9.842 | Universo EE da fila Ghidra; limites ainda sujeitos à reconciliação final |
+| Correspondências exatas | 31 funções / 376 bytes | 31/9.842 funções e 376/2.584.776 bytes |
+| Correspondência parcial | 2 funções / 65 bytes | Registros locais de 10/128 e 55/336 bytes; não são matches exatos |
+| Bytes com alguma correspondência | 441/2.584.776 — 0,0171% | 376 exatos + 65 parciais |
+| Bytes totalmente exatos | 376/2.584.776 — 0,0145% | Só funções cujo corpo inteiro recompilado bateu |
 
-### Evidência e limites
+Os 100% exibidos anteriormente no painel não eram o progresso do jogo: o relatório antigo continha apenas `EE/FUN_001ABEB8` (40 bytes). O painel público está desativado e mantém esse relatório histórico do commit `131576f`; desativado, ele não busca os novos artefatos.
 
-- O objeto-base foi compilado da reconstrução C com SN Systems ProDG EE GCC 2.95.3-EE (SN BUILD 1.36), -O2 -G8 -fomit-frame-pointer.
-- O objeto-alvo foi reconstruído localmente a partir da disassembly verificada; a relocação da chamada foi restaurada e corroborada contra o objeto-base.
-- Ambos os objetos foram ligados no endereço original. A janela resultante de 40 bytes dos dois lados coincide com a referência original registrada pelo SHA-256 b072a1104192ced915e82243dedc5fc3547bd3e62d6b174ef97254d07d2e9182.
-- O alvo relocável é uma divisão reconstruída, não o objeto pré-link original. Essa incerteza está declarada nos metadados do progresso.
-- `progress.json` mantém o escopo detalhado e a evidência; o conversor publica no relatório somente os campos definidos pelo schema Report v2 do objdiff.
-- O runtime dessa função curta não foi confirmado.
-- Nenhum objeto, ELF, assembly, dump ou byte do jogo é incluído no repositório ou no artefato do workflow. O `progress.json` versionado mantém método e hash para auditoria; o artefato do workflow contém apenas métricas, nomes e metadados definidos pelo schema Report v2.
+## Proveniência e limites
 
-O relatório do piloto pode mostrar 100% **dessa única unidade**. Não é percentual do executável nem do jogo. Não somar os conjuntos de módulos IOP, arquivos VU/DVP, funções EE, capturas de emulador ou sessões de análise sem inventário e regra de denominador comuns.
+- A fonte é a fila EE produzida pela exportação local do Ghidra em modo somente leitura: `EE-FILA-DEPENDENCIAS-2026-10-14.csv`.
+- O relatório preserva a ordem da fila e publica apenas nome, endereço, tamanho e medida de comparação de cada função. Chamadores, pseudocódigo, objetos, ELF, ISO e dumps não são incluídos.
+- Os 31 matches exatos incluem 27 reconstruções novas e quatro históricas; os dois casos divergentes contribuem somente com seus bytes parciais medidos.
+- Os 141 rótulos sintéticos não entram na contagem de funções. Os 25 módulos IOP ainda não têm total consolidado de funções. As 88 entradas VU/DVP são fluxos, não funções confirmadas.
+- Por isso, o título e a categoria do painel precisam dizer **EE/R5900 provisório**. Não chamar esses percentuais de cobertura global do PS2.
+- A reconstrução exata mede igualdade estática no escopo registrado; não confirma semântica completa ou comportamento no PCSX2.
+- decomp.wtf não é fonte nem etapa deste processo.
 
-## Como o relatório é gerado
+## Fonte de dados e workflow
 
-O fluxo segue o padrão usado pelo [BFM-decomp](https://github.com/Druthulu/BFM-decomp): métricas auditadas ficam em um JSON versionado e um conversor gera o formato Report v2 que o decomp.dev consome. A Action não recompila o jogo e não precisa acessar os objetos locais.
+- Dados sanitizados e revisáveis: `docs/decompdev/progress.json`.
+- Gerador Report v2: `tools/decompdev_report.py`.
+- Workflow: `.github/workflows/decompdev-report.yml`.
+- Artefato consumido pelo decomp.dev: `SLUS_213.76_report`, contendo `build/report.json`.
+- O JSON de progresso registra o SHA-256 da fila de origem (`49fcf49980da8d045273a9b6a47431fbad9869c507ee7936a18d231462d2c1c3`). Nenhum binário ou código do jogo é usado pelo runner.
 
-- Fonte dos dados: docs/decompdev/progress.json.
-- Conversor: tools/decompdev_report.py.
-- Workflow: .github/workflows/decompdev-report.yml.
-- Artefato publicado pelo GitHub Actions: SLUS_213.76_report, com o arquivo report.json gerado localmente em build/report.json.
-- O workflow roda quando os dados, conversor ou teste mudam no branch padrão, ou por acionamento manual.
-
-Reproduza localmente:
+Reprodução local, a partir da raiz do repositório:
 
 ~~~sh
 python -m unittest tools.test_decompdev_report -v
 python tools/decompdev_report.py --in docs/decompdev/progress.json --out build/report.json
 ~~~
 
-O relatório Report v2 é derivado das contagens da prova local; a prova completa e seus objetos permanecem no acervo privado de pesquisa. Atualizações futuras entram no painel por mudança auditada em progress.json, acompanhada de evidência equivalente.
+O gerador bloqueia versão ou escopo diferentes, contagens divergentes, endereços duplicados, tamanhos inconsistentes e funções marcadas exatas sem correspondência do corpo inteiro.
 
-## Cadastro e sincronização
+## Sincronização do painel
 
-1. O workflow já foi integrado ao branch padrão main no PR #7.
-2. A execução do workflow no branch padrão concluiu com sucesso e publicou o artefato SLUS_213.76_report.
-3. Cadastrar o repositório em [decomp.dev/manage/new](https://decomp.dev/manage/new), com descrição que identifique explicitamente o escopo do piloto.
-4. Conferir no painel que versão, unidade e métricas correspondem ao relatório; a linha de função deve permitir o detalhamento da unidade.
-5. Registrar a URL e a data da sincronização neste documento e no README depois de comprovar a leitura no painel.
+O projeto decomp.dev existente está configurado como PlayStation 2, versão padrão `SLUS_213.76`, workflow `decompdev-report.yml`, mas está desativado. A página ainda mostra o relatório antigo de uma função.
 
-O projeto ainda não está cadastrado nem há prova de leitura do relatório pelo painel. A instalação opcional do GitHub App do decomp.dev deve ser limitada a este repositório caso o serviço realmente a exija; não conceder acesso a todos os repositórios da conta.
+Depois de integrar a fonte de progresso e confirmar uma execução bem-sucedida no `main`:
 
-## Próximo trabalho de progresso global
+1. Definir o nome exibido como `Black PS2 — EE/R5900 (catálogo provisório)` para tornar o escopo visível no cabeçalho.
+2. Manter comentários automáticos em PR desativados.
+3. Ativar o projeto e forçar a atualização dos artefatos.
+4. Conferir no painel 9.842 unidades, 31 matches exatos, 376 bytes exatos e 441 bytes fuzzy; registrar aqui a URL e o commit efetivamente exibidos.
 
-Concluir o inventário de funções únicas e estados de reconstrução do EE, IOP e VU, preservando aliases, limites e proveniência. Cada nova unidade precisa de evidência de compilação/comparação apropriada à arquitetura e versão. O denominador global só será publicado depois de essa reconciliação e validação.
+Só ampliar o escopo para IOP/VU/DVP depois de inventariar unidades e tamanhos únicos e reconciliar aliases, limites e sobreposições. Até lá, a porcentagem do painel é exclusivamente do catálogo EE provisório.

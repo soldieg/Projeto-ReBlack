@@ -1,3 +1,4 @@
 .worktrees/
 .superpowers/
 build/report.json
+__pycache__/

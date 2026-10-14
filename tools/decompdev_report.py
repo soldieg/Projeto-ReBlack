@@ -1,10 +1,19 @@
 #!/usr/bin/env python3
-"""Convert audited progress counts into the objdiff v2 report read by decomp.dev."""
+"""Convert the scoped PS2 EE catalog into the objdiff v2 report for decomp.dev."""
 
 import argparse
 import json
 import re
 from pathlib import Path
+
+
+SCOPE = (
+    "EE/R5900 provisional function catalog only; excludes IOP and VU/DVP; "
+    "not global PS2 coverage"
+)
+NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_.$@]*$")
+ADDRESS_RE = re.compile(r"^0x[0-9A-Fa-f]{8}$")
+SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
 
 
 def _percentage(matched, total):
@@ -34,116 +43,125 @@ def _measures(code_matched, code_total, functions_matched, functions_total,
 
 
 def build_report(progress):
-    if progress.get("schema") != 1:
+    if progress.get("schema") != 2:
         raise ValueError("unsupported progress schema")
     if progress.get("version") != "SLUS_213.76":
-        raise ValueError("this pilot only supports SLUS_213.76")
+        raise ValueError("this report only supports SLUS_213.76")
     scope = progress.get("scope", "").strip()
-    if scope != "EE single-function pilot; not global project coverage":
-        raise ValueError("this pilot requires its exact single-function scope label")
+    if scope != SCOPE:
+        raise ValueError("this report requires the explicit EE/R5900 scope label")
     if progress.get("private_inputs_excluded") is not True:
         raise ValueError("private inputs must be excluded")
-    units_data = progress.get("units")
-    if not isinstance(units_data, list) or len(units_data) != 1:
-        raise ValueError("this pilot requires exactly one unit")
 
+    inventory = progress.get("inventory")
+    if not isinstance(inventory, dict):
+        raise ValueError("inventory metadata is required")
+    if inventory.get("source") != "Ghidra EE function dependency queue":
+        raise ValueError("inventory must come from the Ghidra EE queue")
+    if not SHA256_RE.fullmatch(str(inventory.get("source_sha256", ""))):
+        raise ValueError("inventory source hash must be a SHA-256")
+    if inventory.get("overlapping_intervals") != 0:
+        raise ValueError("overlapping function intervals are not allowed")
+
+    functions_data = progress.get("functions")
+    if not isinstance(functions_data, list) or not functions_data:
+        raise ValueError("the EE function inventory must not be empty")
+    expected_count = inventory.get("function_count")
+    expected_bytes = inventory.get("body_bytes")
+    if (not isinstance(expected_count, int) or isinstance(expected_count, bool)
+            or expected_count != len(functions_data)):
+        raise ValueError("function count does not match the inventory")
+
+    addresses = set()
     units = []
-    all_code_matched = all_code_total = 0
-    all_functions_matched = all_functions_total = 0
-    complete_units = 0
-    for item in units_data:
-        name = item.get("name")
-        if name != "EE/FUN_001ABEB8":
-            raise ValueError("this pilot only supports EE/FUN_001ABEB8")
-        code = item.get("code_bytes", {})
-        functions = item.get("functions", {})
-        if not name:
-            raise ValueError("each unit needs a name")
-        evidence = item.get("evidence")
-        if not isinstance(evidence, dict):
-            raise ValueError(f"{name}: evidence is required")
-        for field in ("date", "comparison", "method", "reference_window_sha256"):
-            if not isinstance(evidence.get(field), str) or not evidence[field].strip():
-                raise ValueError(f"{name}: evidence {field} is required")
-        if not re.fullmatch(r"[0-9a-fA-F]{64}", evidence["reference_window_sha256"]):
-            raise ValueError(f"{name}: evidence reference hash must be a SHA-256")
-        values = (
-            code.get("matched"), code.get("total"),
-            functions.get("matched"), functions.get("total"),
-        )
-        if any(not isinstance(value, int) or isinstance(value, bool) or value < 0
-               for value in values):
-            raise ValueError(f"{name}: counts must be non-negative integers")
-        code_matched, code_total, functions_matched, functions_total = values
-        if code_matched > code_total:
-            raise ValueError(f"{name}: matched code exceeds total")
-        if functions_matched > functions_total:
-            raise ValueError(f"{name}: matched functions exceeds total")
-        if code_total == 0 or functions_total == 0:
-            raise ValueError(f"{name}: total code and functions must be non-zero")
+    total_code = matched_code = complete_code = 0
+    total_functions = matched_functions = complete_units = 0
 
-        complete = item.get("complete", False)
+    for item in functions_data:
+        if not isinstance(item, dict):
+            raise ValueError("function rows must be objects")
+        name = item.get("name")
+        address = item.get("address")
+        if not isinstance(name, str) or not NAME_RE.fullmatch(name):
+            raise ValueError(f"invalid EE function name: {name!r}")
+        if not isinstance(address, str) or not ADDRESS_RE.fullmatch(address):
+            raise ValueError(f"{name}: address must be an 8-digit hexadecimal address")
+        if address.lower() in addresses:
+            raise ValueError(f"duplicate function address: {address}")
+        addresses.add(address.lower())
+
+        size = item.get("size")
+        matched_bytes = item.get("matched_bytes")
+        complete = item.get("complete")
+        if any(not isinstance(value, int) or isinstance(value, bool) or value < 0
+               for value in (size, matched_bytes)):
+            raise ValueError(f"{name}: sizes and matched bytes must be non-negative integers")
+        if size == 0 or matched_bytes > size:
+            raise ValueError(f"{name}: invalid body size or matched-byte count")
         if not isinstance(complete, bool):
             raise ValueError(f"{name}: complete must be a boolean")
-        if complete and (code_matched != code_total or functions_matched != functions_total):
-            raise ValueError(f"{name}: complete unit has unmatched code or functions")
-        complete_units += int(complete)
-        if code_total != 40 or functions_total != 1:
-            raise ValueError(f"{name}: pilot requires one 40-byte function")
-        if evidence.get("symbol") != "FUN_001ABEB8":
-            raise ValueError(f"{name}: evidence symbol must be FUN_001ABEB8")
-        try:
-            virtual_address = int(evidence["linked_address"], 16)
-        except (KeyError, TypeError, ValueError):
-            raise ValueError(f"{name}: evidence linked_address must be hexadecimal") from None
+        if complete and matched_bytes != size:
+            raise ValueError(f"{name}: exact match must cover the complete function")
+        if not complete and matched_bytes == size:
+            raise ValueError(f"{name}: full-byte match must be marked as an exact match")
+
+        fuzzy_percent = _percentage(matched_bytes, size)
+        full_code = size if complete else 0
+        full_function = int(complete)
         measures = _measures(
-            code_matched, code_total, functions_matched, functions_total,
-            1, int(complete), code_total if complete else 0,
+            matched_bytes, size, full_function, 1,
+            1, full_function, full_code,
         )
+        unit_name = f"EE/{name}@{address}"
+        virtual_address = int(address, 16)
         units.append({
-            "name": name,
+            "name": unit_name,
             "measures": measures,
             "sections": [{
                 "name": ".text",
-                "size": code_total,
-                "fuzzy_match_percent": _percentage(code_matched, code_total),
+                "size": size,
+                "fuzzy_match_percent": fuzzy_percent,
             }],
             "functions": [{
-                "name": evidence["symbol"],
-                "size": code_total,
-                "fuzzy_match_percent": _percentage(code_matched, code_total),
+                "name": name,
+                "size": size,
+                "fuzzy_match_percent": fuzzy_percent,
                 "address": 0,
                 "metadata": {"virtual_address": virtual_address},
             }],
             "metadata": {
                 "complete": complete,
-                "module_name": name.split("/", 1)[0],
+                "module_name": "EE",
                 "source_path": "docs/decompdev/progress.json",
-                "progress_categories": ["ee-pilot"],
-                "auto_generated": False,
+                "progress_categories": ["ee-r5900-provisional"],
+                "auto_generated": True,
             },
         })
-        all_code_matched += code_matched
-        all_code_total += code_total
-        all_functions_matched += functions_matched
-        all_functions_total += functions_total
-    if len(units) != 1 or len(units[0]["functions"]) != all_functions_total:
-        raise ValueError("function rows must match the audited function count")
+        total_code += size
+        matched_code += matched_bytes
+        complete_code += full_code
+        total_functions += 1
+        matched_functions += full_function
+        complete_units += full_function
+
+    if expected_bytes != total_code:
+        raise ValueError("body-byte total does not match the inventory")
+    if inventory.get("unique_start_count") != total_functions:
+        raise ValueError("unique function-start count does not match the inventory")
+    if inventory.get("synthetic_labels_excluded") != 141:
+        raise ValueError("the 141 synthetic labels must remain excluded from the EE denominator")
 
     overall = _measures(
-        all_code_matched, all_code_total,
-        all_functions_matched, all_functions_total,
-        len(units), complete_units, sum(
-            unit["measures"]["complete_code"] for unit in units
-        ),
+        matched_code, total_code, matched_functions, total_functions,
+        len(units), complete_units, complete_code,
     )
     return {
         "version": 2,
         "measures": overall,
         "units": units,
         "categories": [{
-            "id": "ee-pilot",
-            "name": "EE single-function pilot (not global coverage)",
+            "id": "ee-r5900-provisional",
+            "name": "EE/R5900 provisional function catalog only (not global PS2 coverage)",
             "measures": overall.copy(),
         }],
     }
@@ -158,11 +176,13 @@ def main():
     report = build_report(progress)
     output = Path(args.out)
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    output.write_text(json.dumps(report, separators=(",", ":")) + "\n", encoding="utf-8")
     measures = report["measures"]
     print(
-        f"decompdev-report: {measures['matched_functions']}/{measures['total_functions']} "
-        f"functions; {measures['matched_code']}/{measures['total_code']} code bytes; "
+        f"decompdev-report: exact {measures['matched_functions']}/"
+        f"{measures['total_functions']} functions, "
+        f"{measures['complete_code']}/{measures['total_code']} exact bytes; "
+        f"fuzzy {measures['matched_code']}/{measures['total_code']} bytes; "
         f"scope: {progress['scope']}; wrote {output}"
     )
 
