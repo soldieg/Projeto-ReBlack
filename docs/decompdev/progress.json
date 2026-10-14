@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "version": "SLUS_213.76",
+  "scope": "EE single-function pilot; not global project coverage",
+  "private_inputs_excluded": true,
+  "units": [
+    {
+      "name": "EE/FUN_001ABEB8",
+      "code_bytes": {
+        "matched": 40,
+        "total": 40
+      },
+      "functions": {
+        "matched": 1,
+        "total": 1
+      },
+      "complete": true,
+      "evidence": {
+        "date": "2026-10-14",
+        "symbol": "FUN_001ABEB8",
+        "linked_address": "0x001ABEB8",
+        "original_file_offset": "0xACEB8",
+        "reference_window_bytes": 40,
+        "reference_window_sha256": "b072a1104192ced915e82243dedc5fc3547bd3e62d6b174ef97254d07d2e9182",
+        "comparison": "objdiff-cli 3.8.2",
+        "toolchain": "SN Systems ProDG EE GCC 2.95.3-EE (SN BUILD 1.36), -O2 -G8 -fomit-frame-pointer",
+        "method": "The target relocatable object was reconstructed locally from verified disassembly with the call relocation restored. Target and reconstructed-source objects were linked at the original function address; both linked 40-byte windows matched the recorded original reference hash.",
+        "limitations": [
+          "The target object is a local reconstructed split, not an original pre-link object.",
+          "The relocation was restored from the observed call target and corroborated by the candidate object.",
+          "This one-function pilot does not estimate coverage of the executable or game.",
+          "Runtime behavior for this short function has not been confirmed."
+        ]
+      }
+    }
+  ]
+}
