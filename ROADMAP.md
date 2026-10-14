@@ -45,3 +45,9 @@ Reusar as análises #409–#413. Seguir a origem das chaves e a escrita/leitura 
 ## 6. Atualizar o painel
 
 Em cada avanço importante, atualizar [STATUS.md](STATUS.md), registrar os dados e limites em [EVIDENCIAS.md](EVIDENCIAS.md) e incluir uma entrada em [ATUALIZACOES.md](ATUALIZACOES.md). Um número só entra como percentual quando numerador e denominador estiverem definidos.
+
+## 7. Preparar a sincronização com decomp.dev
+
+Consulte [DECOMPDEV.md](DECOMPDEV.md) e a [wiki oficial do decomp.dev](https://decomp.wiki/tools/decomp-dev). A publicação depende de um inventário completo de unidades e de uma configuração `objdiff` que compare objetos-alvo e objetos-base correspondentes. Só depois de gerar um relatório válido no branch padrão devemos adicioná-lo ao decomp.dev e configurar a integração do GitHub.
+
+**Condição de saída:** a página pública mostra um relatório reproduzível do projeto, sem contar desmontagem, mapas ou execuções do emulador como funções recompiladas.

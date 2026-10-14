@@ -1,6 +1,6 @@
 # Status do Projeto ReBlack
 
-**Atualizado:** 11/10/2026  
+**Atualizado:** 14/10/2026
 **Plataforma deste projeto:** PlayStation 2 (Emotion Engine/R5900, IOP e VU).  
 **Estado geral:** investigação técnica em andamento; recuperação integral do código-fonte ainda não alcançada.
 
@@ -17,6 +17,7 @@
 | REA no fluxo PS2 | **Avaliação comparativa concluída (#502)** | Resultado documentado; sem análise PS2 independente no ambiente testado | Reavaliar somente se houver suporte compatível com ELF/MIPS EE. |
 | Captura e análise runtime | **Várias observações documentadas** | Útil para hipóteses específicas; cobertura do jogo não medida | Fazer captura discriminativa para validar endereços e estruturas pendentes. |
 | Piloto decomp.me | **0% iniciado** | Planejado, ainda não pronto para uso no BLACK | Verificar compilador EE/R5900 e exposição dos dados antes de criar scratch. |
+| Execuções PCSX2 #507–#508 | **Gameplay e tela `LOADING` observados** | Marcos visuais do jogo original documentados | Seguir o record APT até a submissão GS; isso não mede cobertura de código. |
 
 ### Como ler os percentuais
 
@@ -32,6 +33,10 @@
 3. [#2 — Fechar o fluxo de chaves e lista de objetos StUnit/Unit](https://github.com/soldieg/Projeto-ReBlack/issues/2), reusando #409–#413.
 4. [#1 — Verificar o suporte EE/R5900 e preparar piloto seguro no decomp.me](https://github.com/soldieg/Projeto-ReBlack/issues/1).
 
-## Último marco
+## Últimos marcos
 
 A execução #502 comparou REA, Ghidra e o fluxo combinado no mesmo ELF. O Ghidra repetiu as consultas com sucesso e os dados da amostra #500 foram conferidos novamente. O REA detectou ELF/MIPS, mas o provedor Ghidra no Windows rejeitou o alvo antes da análise. Não foram encontradas funções novas nessa execução.
+
+Na execução #507, uma captura nativa do PCSX2 mostrou gameplay em primeira pessoa, com cenário 3D, HUD e arma. Na #508, a VM foi parada na solicitação `Loading_screen` (`PC=0x0020B678`, `a1=0x003FA5A0`, `a2=5`); após retomar o mesmo processo, os quadros 03–05 mostraram a tela animada `LOADING`. A correlação exata entre o record de `Loading.bin`, os pacotes GS e cada quadro ainda não foi demonstrada. Veja [EVIDENCIAS.md](EVIDENCIAS.md).
+
+Esses marcos pertencem ao jogo original no PCSX2. Eles não confirmam uma recompilação para PC, nem alteram o estado de cobertura global: o denominador de funções únicas segue pendente.

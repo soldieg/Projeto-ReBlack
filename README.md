@@ -21,6 +21,9 @@ Este arquivo SVG é uma imagem estática no GitHub: não permite clicar para abr
 - **Integridade da amostra Unit:** hashes e tamanhos de 42/42 arquivos conferidos.
 - **Reconstrução comparada:** uma região de 36 bytes tem correspondência exata documentada. Isso ainda não confirma a toolchain original.
 - **Comparação REA/Ghidra (#502):** a comparação e a repetição das consultas Ghidra foram registradas; o provedor REA no Windows recusou o alvo antes da análise independente. Nenhuma função nova foi confirmada nessa execução.
+- **Execuções #507–#508:** capturas do PCSX2 confirmam uma cena em primeira pessoa com HUD e, depois, a própria tela animada `LOADING`. Isso documenta o jogo original rodando no emulador; não é um port para PC nem um percentual de decompilação.
+
+O projeto ainda não tem um relatório `objdiff` nem o inventário completo de unidades necessário para sincronização de progresso com o decomp.dev. Consulte [DECOMPDEV.md](DECOMPDEV.md) para os requisitos e o estado da integração.
 
 ## Próximas etapas
 
