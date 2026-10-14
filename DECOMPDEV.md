@@ -15,13 +15,14 @@ O [guia oficial](https://decomp.wiki/tools/decomp-dev) descreve este fluxo:
 
 ## Situação verificada neste repositório
 
-- A branch `main` contém documentação do projeto e o mapa SVG; não contém pipeline de build, `objdiff.json`, objetos-alvo/base ou workflow de GitHub Actions.
+- A branch `main` contém documentação do projeto; o mapa SVG foi removido do estado atual no PR #5. Ainda não contém pipeline de build, `objdiff.json`, objetos-alvo/base ou workflow de GitHub Actions.
+- Como o histórico do Git não foi reescrito, o SVG removido ainda pode ser recuperado pelo commit histórico `248931b`, agora visível no repositório público.
 - O status do projeto ainda declara pendente o inventário completo de funções únicas do EE, IOP e VU. Sem esse denominador, não há relatório global reproduzível.
 - As evidências #507–#508 são observações do jogo original no PCSX2. Elas não podem ser contadas como unidades matching no `objdiff`.
-- O README registra o repositório como privado. A URL pública `https://decomp.dev/soldieg/Projeto-ReBlack` retorna “Not found”.
-- Na conta autenticada `@soldieg`, o formulário `decomp.dev/manage/new` mostra `soldieg/Black-2006-Recomp` e `soldieg/CUMA`, mas não mostra `soldieg/Projeto-ReBlack`. A página informa que repositórios privados exigem instalar o GitHub App do decomp.dev.
+- O repositório GitHub foi tornado público em 14/10/2026. O painel decomp.dev ainda não foi cadastrado e não há relatório de progresso para publicar.
+- Antes da mudança de visibilidade, o formulário `decomp.dev/manage/new` não listava este repositório e indicava a instalação do GitHub App para acesso a repositórios privados. A elegibilidade do repositório público no formulário ainda precisa ser conferida depois que existir um artefato de relatório válido.
 - A tela de instalação oferece `All repositories` como padrão. Essa opção cobre todos os repositórios atuais e futuros da conta; também existe `Only select repositories`. As permissões mostradas pelo GitHub são leitura de Actions, código e metadados, mais leitura e escrita em issues e pull requests.
-- A instalação não foi confirmada nem aplicada. A página do decomp.dev publica relatórios de progresso; o README do app informa que ele recebe eventos de workflows e pode comentar em PRs. O conector GitHub do Codex segue sem conta conectada, mas a autenticação do navegador mostrou `@soldieg`.
+- A instalação do GitHub App não foi confirmada nem aplicada. A página do decomp.dev publica relatórios de progresso; o app recebe eventos de workflows e pode comentar em PRs. Como o repositório agora é público, a instalação permanece opcional e pode ser avaliada depois de um workflow de relatório real.
 
 ## Pré-flight do piloto decomp.dev — 14/10/2026
 

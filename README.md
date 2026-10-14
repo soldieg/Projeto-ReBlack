@@ -1,6 +1,6 @@
 # Projeto ReBlack
 
-Acompanhamento privado da engenharia reversa e decompilação da versão PlayStation 2 de BLACK.
+Acompanhamento público da engenharia reversa e decompilação da versão PlayStation 2 de BLACK.
 
 > Este repositório é um painel de progresso e documentação. Ele não contém a ISO, arquivos extraídos do jogo, executáveis, dumps de memória ou pseudocódigo derivado do jogo.
 
