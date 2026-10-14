@@ -78,6 +78,17 @@ class DecompdevReportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "private inputs must be excluded"):
             build_report(self.progress)
 
+    def test_rejects_malformed_validation_evidence_reference(self):
+        self.progress["functions"][0]["validation_evidence"] = {
+            "id": "EXEC-519",
+            "method": "objdiff-cli",
+            "sha256": "bad",
+            "validated_at": "2026-10-14",
+        }
+
+        with self.assertRaisesRegex(ValueError, "validation evidence SHA-256"):
+            build_report(self.progress)
+
 
 if __name__ == "__main__":
     unittest.main()

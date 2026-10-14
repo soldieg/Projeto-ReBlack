@@ -1,0 +1,44 @@
+name: Open validated progress PR
+
+on:
+  push:
+    branches:
+      - "decompdev/validated-*"
+
+permissions:
+  pull-requests: write
+
+jobs:
+  open-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Open one metadata-only progress PR
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const branch = context.ref.replace(/^refs\/heads\//, "");
+            const existing = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              head: `${context.repo.owner}:${branch}`,
+              base: "main",
+            });
+            if (existing.data.length > 0) {
+              core.notice(`PR already exists: ${existing.data[0].html_url}`);
+              return;
+            }
+
+            const result = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: branch,
+              base: "main",
+              title: `Validated PS2 progress: ${branch.split("/").at(-1)}`,
+              body: [
+                "This PR updates only sanitized function progress metadata and a SHA-256 reference to local validation evidence.",
+                "No game binaries, reconstructed source, object files, or raw evidence are included.",
+                "GitHub Actions validates the progress schema and report. Review the evidence locally, then merge to publish the updated report artifact for decomp.dev.",
+              ].join("\n\n"),
+            });
+            core.notice(`Opened ${result.data.html_url}`);

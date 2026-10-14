@@ -4,6 +4,7 @@
 import argparse
 import json
 import re
+from datetime import date
 from pathlib import Path
 
 
@@ -104,6 +105,26 @@ def build_report(progress):
             raise ValueError(f"{name}: exact match must cover the complete function")
         if not complete and matched_bytes == size:
             raise ValueError(f"{name}: full-byte match must be marked as an exact match")
+
+        evidence = item.get("validation_evidence")
+        if evidence is not None:
+            if not isinstance(evidence, dict):
+                raise ValueError(f"{name}: validation evidence must be an object")
+            if not isinstance(evidence.get("id"), str) or not evidence["id"].strip():
+                raise ValueError(f"{name}: validation evidence id is required")
+            if not isinstance(evidence.get("method"), str) or not evidence["method"].strip():
+                raise ValueError(f"{name}: validation evidence method is required")
+            if not SHA256_RE.fullmatch(str(evidence.get("sha256", ""))):
+                raise ValueError(f"{name}: validation evidence SHA-256 is invalid")
+            validated_at = evidence.get("validated_at")
+            if not isinstance(validated_at, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", validated_at):
+                raise ValueError(f"{name}: validation evidence date is invalid")
+            try:
+                date.fromisoformat(validated_at)
+            except ValueError as exc:
+                raise ValueError(f"{name}: validation evidence date is invalid") from exc
+            if not complete:
+                raise ValueError(f"{name}: validation evidence requires an exact complete match")
 
         fuzzy_percent = _percentage(matched_bytes, size)
         full_code = size if complete else 0

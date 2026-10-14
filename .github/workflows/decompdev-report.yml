@@ -7,6 +7,9 @@ on:
       - "docs/decompdev/progress.json"
       - "tools/decompdev_report.py"
       - "tools/test_decompdev_report.py"
+      - "tools/record_validated_functions.py"
+      - "tools/test_record_validated_functions.py"
+      - ".github/workflows/decompdev-validation-pr.yml"
   push:
     branches:
       - main
@@ -15,6 +18,9 @@ on:
       - "docs/decompdev/progress.json"
       - "tools/decompdev_report.py"
       - "tools/test_decompdev_report.py"
+      - "tools/record_validated_functions.py"
+      - "tools/test_record_validated_functions.py"
+      - ".github/workflows/decompdev-validation-pr.yml"
   workflow_dispatch:
 
 permissions:
@@ -35,6 +41,9 @@ jobs:
 
       - name: Validate the report generator
         run: python -m unittest tools.test_decompdev_report -v
+
+      - name: Validate the function recorder
+        run: python -m unittest tools.test_record_validated_functions -v
 
       - name: Generate the decomp.dev report from audited metrics
         run: python tools/decompdev_report.py --in docs/decompdev/progress.json --out build/report.json
