@@ -6,7 +6,7 @@ Acompanhamento público da engenharia reversa e decompilação da versão PlaySt
 
 ## Progresso da decompilação
 
-- **Piloto do decomp.dev:** uma unidade EE, FUN_001ABEB8, com 40/40 bytes correspondentes no relatório piloto. O alvo foi reconstruído localmente e ligado contra a referência; objetos e bytes do jogo não são enviados. Esse 100% se aplica somente à unidade do piloto e não mede a cobertura do jogo. A publicação no painel ainda aguarda uma execução no branch padrão e o cadastro do projeto. Veja [evidências, método e limites](DECOMPDEV.md).
+- **Piloto do decomp.dev:** uma unidade EE, FUN_001ABEB8, com 40/40 bytes correspondentes no relatório piloto. O workflow do branch padrão já gera o artefato `SLUS_213.76_report`; o cadastro e a leitura no painel ainda precisam ser confirmados. O alvo foi reconstruído localmente e ligado contra a referência; objetos e bytes do jogo não são enviados. Esse 100% se aplica somente à unidade do piloto e não mede a cobertura do jogo. Veja [evidências, método e limites](DECOMPDEV.md).
 - **Cobertura global:** ainda sem percentual confiável. Falta inventariar todas as funções únicas do executável e definir um denominador completo; os números abaixo pertencem a escopos específicos.
 
 ## Situação do projeto
@@ -19,7 +19,7 @@ Acompanhamento público da engenharia reversa e decompilação da versão PlaySt
 - **Comparação REA/Ghidra (#502):** a comparação e a repetição das consultas Ghidra foram registradas; o provedor REA no Windows recusou o alvo antes da análise independente. Nenhuma função nova foi confirmada nessa execução.
 - **Execuções #507–#508:** capturas do PCSX2 confirmam uma cena em primeira pessoa com HUD e, depois, a própria tela animada `LOADING`. Isso documenta o jogo original rodando no emulador; não é um port para PC nem um percentual de decompilação.
 
-O relatório piloto do objdiff é gerado a partir de métricas auditadas em `docs/decompdev/progress.json`. O inventário completo de unidades ainda não existe, portanto a cobertura global continua sem percentual. Consulte [DECOMPDEV.md](DECOMPDEV.md) para os requisitos e o estado da sincronização.
+O relatório piloto do objdiff é gerado a partir de métricas auditadas em `docs/decompdev/progress.json`. O workflow do GitHub Actions está ativo no branch padrão e publica o artefato `SLUS_213.76_report`; falta conferir o cadastro e a sincronização do painel. O inventário completo de unidades ainda não existe, portanto a cobertura global continua sem percentual. Consulte [DECOMPDEV.md](DECOMPDEV.md) para os requisitos e o estado da sincronização.
 
 ## Próximas etapas
 

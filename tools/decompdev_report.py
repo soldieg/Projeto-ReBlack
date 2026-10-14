@@ -12,7 +12,7 @@ def _percentage(matched, total):
 
 
 def _measures(code_matched, code_total, functions_matched, functions_total,
-              units_total=0, units_complete=0):
+              units_total=0, units_complete=0, complete_code=0):
     return {
         "fuzzy_match_percent": _percentage(code_matched, code_total),
         "total_code": code_total,
@@ -24,8 +24,8 @@ def _measures(code_matched, code_total, functions_matched, functions_total,
         "total_functions": functions_total,
         "matched_functions": functions_matched,
         "matched_functions_percent": _percentage(functions_matched, functions_total),
-        "complete_code": code_matched,
-        "complete_code_percent": _percentage(code_matched, code_total),
+        "complete_code": complete_code,
+        "complete_code_percent": _percentage(complete_code, code_total),
         "complete_data": 0,
         "complete_data_percent": 0.0,
         "total_units": units_total,
@@ -36,14 +36,16 @@ def _measures(code_matched, code_total, functions_matched, functions_total,
 def build_report(progress):
     if progress.get("schema") != 1:
         raise ValueError("unsupported progress schema")
+    if progress.get("version") != "SLUS_213.76":
+        raise ValueError("this pilot only supports SLUS_213.76")
     scope = progress.get("scope", "").strip()
-    if not scope:
-        raise ValueError("scope is required")
+    if scope != "EE single-function pilot; not global project coverage":
+        raise ValueError("this pilot requires its exact single-function scope label")
     if progress.get("private_inputs_excluded") is not True:
         raise ValueError("private inputs must be excluded")
     units_data = progress.get("units")
-    if not isinstance(units_data, list) or not units_data:
-        raise ValueError("at least one progress unit is required")
+    if not isinstance(units_data, list) or len(units_data) != 1:
+        raise ValueError("this pilot requires exactly one unit")
 
     units = []
     all_code_matched = all_code_total = 0
@@ -51,6 +53,8 @@ def build_report(progress):
     complete_units = 0
     for item in units_data:
         name = item.get("name")
+        if name != "EE/FUN_001ABEB8":
+            raise ValueError("this pilot only supports EE/FUN_001ABEB8")
         code = item.get("code_bytes", {})
         functions = item.get("functions", {})
         if not name:
@@ -84,7 +88,18 @@ def build_report(progress):
         if complete and (code_matched != code_total or functions_matched != functions_total):
             raise ValueError(f"{name}: complete unit has unmatched code or functions")
         complete_units += int(complete)
-        measures = _measures(code_matched, code_total, functions_matched, functions_total, 1, int(complete))
+        if code_total != 40 or functions_total != 1:
+            raise ValueError(f"{name}: pilot requires one 40-byte function")
+        if evidence.get("symbol") != "FUN_001ABEB8":
+            raise ValueError(f"{name}: evidence symbol must be FUN_001ABEB8")
+        try:
+            virtual_address = int(evidence["linked_address"], 16)
+        except (KeyError, TypeError, ValueError):
+            raise ValueError(f"{name}: evidence linked_address must be hexadecimal") from None
+        measures = _measures(
+            code_matched, code_total, functions_matched, functions_total,
+            1, int(complete), code_total if complete else 0,
+        )
         units.append({
             "name": name,
             "measures": measures,
@@ -93,7 +108,13 @@ def build_report(progress):
                 "size": code_total,
                 "fuzzy_match_percent": _percentage(code_matched, code_total),
             }],
-            "functions": [],
+            "functions": [{
+                "name": evidence["symbol"],
+                "size": code_total,
+                "fuzzy_match_percent": _percentage(code_matched, code_total),
+                "address": 0,
+                "metadata": {"virtual_address": virtual_address},
+            }],
             "metadata": {
                 "complete": complete,
                 "module_name": name.split("/", 1)[0],
@@ -110,11 +131,15 @@ def build_report(progress):
         all_code_total += code_total
         all_functions_matched += functions_matched
         all_functions_total += functions_total
+    if len(units) != 1 or len(units[0]["functions"]) != all_functions_total:
+        raise ValueError("function rows must match the audited function count")
 
     overall = _measures(
         all_code_matched, all_code_total,
         all_functions_matched, all_functions_total,
-        len(units), complete_units,
+        len(units), complete_units, sum(
+            unit["measures"]["complete_code"] for unit in units
+        ),
     )
     return {
         "version": 2,
