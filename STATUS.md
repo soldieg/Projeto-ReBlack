@@ -9,6 +9,7 @@
 | Frente | Avanço verificável | Estado | O que falta |
 |---|---:|---|---|
 | Cobertura global do executável | **Sem percentual confiável** | Base de contagem pendente | Inventariar funções únicas do EE, IOP e VU e classificar cada uma. |
+| Catálogo EE/R5900 provisório | **31/9.842 funções exatas; 441/2.584.776 bytes fuzzy** | Fila Ghidra contada; recorte não global | Atualizar a página decomp.dev, que ainda exibe o relatório histórico de uma função. |
 | Módulos IOP do mapa inicial | **25/25 — 100% desse conjunto** | Análise inicial pronta para consulta | Medir cobertura de funções e confirmar o que exige aprofundamento. |
 | Overlays VU/DVP do lote catalogado | **88/88 — 100% do mapeamento inicial** | Catálogo e desmontagem inicial concluídos | Análise independente da VU1 no Ghidra e interpretação semântica. |
 | Amostra de slots Unit da execução #500 | **292/292 — 100% da amostra** | Processamento concluído; alguns casos sem resolução | Validar alvos em RAM e explicar os 3 casos com limites inválidos. |

@@ -46,8 +46,10 @@ Reusar as análises #409–#413. Seguir a origem das chaves e a escrita/leitura 
 
 Em cada avanço importante, atualizar [STATUS.md](STATUS.md), registrar os dados e limites em [EVIDENCIAS.md](EVIDENCIAS.md) e incluir uma entrada em [ATUALIZACOES.md](ATUALIZACOES.md). Um número só entra como percentual quando numerador e denominador estiverem definidos.
 
-## 7. Preparar a sincronização com decomp.dev
+## 7. Atualizar decomp.dev com o recorte EE
 
-Consulte [DECOMPDEV.md](DECOMPDEV.md) e a [wiki oficial do decomp.dev](https://decomp.wiki/tools/decomp-dev). A publicação depende de um inventário completo de unidades e de uma configuração `objdiff` que compare objetos-alvo e objetos-base correspondentes. Só depois de gerar um relatório válido no branch padrão devemos adicioná-lo ao decomp.dev e configurar a integração do GitHub.
+Consulte [DECOMPDEV.md](DECOMPDEV.md). O relatório atual usa somente o catálogo EE/R5900 provisório, com 9.842 funções da fila Ghidra, 31 matches exatos e dois parciais. Identifique o painel como **EE/R5900 provisório**, mantenha IOP e VU/DVP fora do denominador e não apresente o resultado como cobertura global do PS2.
 
-**Condição de saída:** a página pública mostra um relatório reproduzível do projeto, sem contar desmontagem, mapas ou execuções do emulador como funções recompiladas.
+Depois de validar o Report v2 no branch padrão, atualizar a página existente e conferir contagens, percentuais, versão e commit no painel. O projeto está desativado e sua página ainda conserva o relatório antigo de uma função; não ativar até que o novo artefato esteja disponível e o cabeçalho deixe o escopo EE explícito.
+
+**Condição de saída:** a página pública mostra as 9.842 unidades EE do relatório correto e informa claramente que o restante do PS2 ainda não tem denominador reconciliado.
