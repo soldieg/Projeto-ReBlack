@@ -42,7 +42,18 @@ class DecompdevReportTests(unittest.TestCase):
         self.assertEqual(function["size"], 40)
         self.assertEqual(function["fuzzy_match_percent"], 100.0)
         self.assertEqual(function["metadata"]["virtual_address"], 0x001ABEB8)
-        self.assertIn("not global", report["units"][0]["metadata"]["scope"])
+        self.assertEqual(
+            set(report["units"][0]["metadata"]),
+            {
+                "complete",
+                "module_name",
+                "source_path",
+                "progress_categories",
+                "auto_generated",
+            },
+        )
+        self.assertIn("not global", self.progress["scope"])
+        self.assertIn("reference_window_sha256", self.progress["units"][0]["evidence"])
         self.assertEqual(report["categories"][0]["id"], "ee-pilot")
 
     def test_incomplete_unit_does_not_count_as_complete_code(self):
