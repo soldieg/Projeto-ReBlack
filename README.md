@@ -1,4 +1,4 @@
-# ReBlack-PS2 — BLACK para PlayStation 2
+# ReBlack-PS2 — BLACK de PlayStation 2 para PC
 
 O ReBlack-PS2 acompanha a engenharia reversa e a decompilação de *BLACK* para **PlayStation 2**. O escopo é a arquitetura do console: Emotion Engine (EE/R5900), IOP e unidades vetoriais VU. Nenhuma outra versão ou plataforma faz parte deste projeto.
 
