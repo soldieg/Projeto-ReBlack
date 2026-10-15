@@ -38,10 +38,36 @@ Reprodução local, a partir da raiz do repositório:
 
 ~~~sh
 python -m unittest tools.test_decompdev_report -v
+python -m unittest tools.test_record_validated_functions -v
 python tools/decompdev_report.py --in docs/decompdev/progress.json --out build/report.json
 ~~~
 
 O gerador bloqueia versão ou escopo diferentes, contagens divergentes, endereços duplicados, tamanhos inconsistentes e funções marcadas exatas sem correspondência do corpo inteiro.
+
+## Registrar uma função validada
+
+Use `tools/record_validated_functions.py` depois que a comparação local comprovar o match exato. Para funções cuja validação depende uma da outra, inclua todas no mesmo registro: o lote só é aceito por inteiro.
+
+1. Crie um JSON local com ID/método da evidência e as funções (`name`, `address`, `size`).
+2. Aponte para o arquivo local da evidência. O script calcula o SHA-256; o arquivo e seu caminho não são enviados.
+3. Execute `python tools/record_validated_functions.py --record <registro.json> --evidence-file <evidencia-local>`.
+4. O script busca `origin/main`, confere nome/endereço/tamanho, executa as validações e envia uma branch contendo apenas `docs/decompdev/progress.json`; depois abre o PR com a credencial GitHub configurada para o Git.
+5. GitHub Actions valida o relatório no PR. Revise o resultado e faça merge; o workflow de `main` publica o artefato `SLUS_213.76_report`, que atualiza o painel.
+
+Modelo do registro local:
+
+~~~json
+{
+  "schema": 1,
+  "validated_at": "AAAA-MM-DD",
+  "evidence": {"id": "ID-DA-EVIDENCIA", "method": "comparação integral de bytes"},
+  "functions": [
+    {"name": "FUN_XXXXXXXX", "address": "0xXXXXXXXX", "size": 8}
+  ]
+}
+~~~
+
+O progresso só aceita correspondência exata de corpo inteiro. Evidência incompleta ou dependência pendente continua na fila local; não deve ser promovida ao painel como função completa.
 
 ## Sincronização do painel
 

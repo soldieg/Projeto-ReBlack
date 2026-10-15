@@ -28,6 +28,7 @@ Este repositório publica documentação e progresso. Ele não distribui a image
 - **vudis** — desmontagem inicial de dados VU/DVP; seus arquivos e contagens não são tratados como funções decompiladas.
 - [objdiff](https://github.com/encounter/objdiff) — formato do relatório de progresso por função.
 - **GitHub Actions** — valida os dados e gera o relatório Report v2 para a integração de progresso.
+- **Registro de função validada** — `tools/record_validated_functions.py` abre um PR com metadados e referência da evidência; Actions valida e, após merge, atualiza o artefato do painel. Veja [passo a passo e modelo](DECOMPDEV.md#registrar-uma-função-validada).
 - [decomp.dev](https://decomp.dev/) e [decomp.wiki](https://decomp.wiki/tools/decomp-dev) — destino do painel de progresso e documentação do fluxo de integração.
 - [REA](https://github.com/morluto/rea) — avaliado no fluxo PS2; o provedor disponível recusou o alvo ELF/MIPS nesta execução, então não há resultado independente do REA contado como decompilação.
 
